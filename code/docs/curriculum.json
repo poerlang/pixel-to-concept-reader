@@ -1,0 +1,81 @@
+{
+  "stable": [
+    "big_shift_diff_s_1",
+    "big_shift_diff_set",
+    "chain_len_5",
+    "const_low",
+    "ldist_1",
+    "ldist_2",
+    "ldist_3",
+    "ldist_4",
+    "loop_fill_3",
+    "loop_size_0",
+    "loverlap_no",
+    "lratio_same",
+    "lrel_below",
+    "lrel_right",
+    "lzfill_0_1_2",
+    "lzfill_2_0_2",
+    "lzone_0_1",
+    "lzone_2_0",
+    "lzsize_0_1_0",
+    "lzsize_2_0_0",
+    "shift_start_1"
+  ],
+  "unique": {
+    "8": [
+      "loop_size_1",
+      "loop_size_2",
+      "lzsize_1_0_1",
+      "lzsize_0_1_1",
+      "lzsize_3_1_1",
+      "lzone_1_1",
+      "lzsize_1_1_2",
+      "lzfill_1_1_2",
+      "lzsize_2_1_2",
+      "lzsize_3_2_1",
+      "lzsize_0_2_1",
+      "lzsize_1_3_1",
+      "lratio_big",
+      "lratio_small",
+      "small_shift_diff_s_2",
+      "small_shift_diff_l_1",
+      "small_shift_diff_s_1",
+      "big_shift_diff_l_1",
+      "shift_diff_accum_l_4_span_4",
+      "small_shift_diff_r_1",
+      "small_shift_diff_s_0",
+      "shift_diff_accum_r_3_span_3",
+      "chain_len_4",
+      "shift_diff_accum_r_2_span_2",
+      "small_shift_diff_l_0",
+      "shift_diff_accum_l_2_span_3",
+      "big_shift_diff_n_6"
+    ],
+    "9": [
+      "lzone_1_2",
+      "lzsize_1_2_0",
+      "lzfill_1_2_2",
+      "step_rel_1",
+      "closure",
+      "shift_diff_accum_r_1_span_2",
+      "big_shift_diff_l_2",
+      "shift_diff_accum_l_1_span_2",
+      "closures_n"
+    ],
+    "纯圆": [
+      "chains_2",
+      "shift_diff_accum_r_4_span_4"
+    ],
+    "直线": [
+      "shifts_7",
+      "big_shift_diff_n_4"
+    ],
+    "角": [
+      "shift_diff_accum_r_1_span_3"
+    ],
+    "S": [
+      "shifts_0"
+    ]
+  }
+}

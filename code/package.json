@@ -1,0 +1,16 @@
+{
+  "name": "pixel-to-concept-code",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "train": "node tools/baby.ts train",
+    "test": "node tools/baby.ts test",
+    "shift": "node tools/baby.ts shift",
+    "trace": "node tools/baby.ts trace",
+    "tower": "node tools/baby.ts tower",
+    "classic": "node tools/classic.ts",
+    "curriculum": "node tools/curriculum.ts",
+    "translation": "node tools/translation.ts",
+    "layout": "node tools/layout.ts"
+  }
+}

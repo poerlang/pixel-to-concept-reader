@@ -61,9 +61,23 @@ figures/
   overview-en.png             English overview
   classic-figures-vertical.png
   layout-invariance-vertical.png
+code/
+  README.md                  代码说明、数据格式、运行命令
+  src/                       NAL 与感知代码
+  tools/                     训练/测试/诊断脚本
 ```
 
 所有图都提供 SVG 源文件，方便打印或二次排版。
+
+## 代码
+
+代码也放在同一个仓库：[code/README.md](code/README.md)。
+
+- Node.js 26，原生 TypeScript，无运行时 npm 依赖；
+- `src/nars` 是通用 NAL 部分，`src/perception` 是像素到结构词项的感知部分；
+- 训练/测试命令在 `code/` 目录运行；
+- MNIST 二进制数据不随仓库分发，格式和放置位置写在代码说明里；
+- 用同一份数据跑过：200 张测试，**162/200 = 81.0%**。
 
 ## 引用
 
