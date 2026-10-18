@@ -7,7 +7,7 @@
     <g transform="translate(45,105)">
       <rect width="730" height="250" rx="14" fill="#f7fafc" stroke="#c7d5e2"/>
       <text x="25" y="34" font-size="20" font-weight="700" fill="#1e3448">shift (0,0)</text>
-      <g transform="translate(180,45)">
+      <g transform="translate(180,30)">
         <rect x="20" y="15" width="110" height="155" rx="10" fill="#e8eef4"/>
         <circle cx="65" cy="55" r="26" fill="none" stroke="#38bdf8" stroke-width="7"/>
         <path d="M82,78 L92,140" stroke="#38bdf8" stroke-width="7" stroke-linecap="round"/>
@@ -21,7 +21,7 @@
     <g transform="translate(45,380)">
       <rect width="730" height="250" rx="14" fill="#f7fafc" stroke="#c7d5e2"/>
       <text x="25" y="34" font-size="20" font-weight="700" fill="#1e3448">shift (1,1)</text>
-      <g transform="translate(186,51)">
+      <g transform="translate(240,52)">
         <rect x="20" y="15" width="110" height="155" rx="10" fill="#e8eef4"/>
         <circle cx="65" cy="55" r="26" fill="none" stroke="#38bdf8" stroke-width="7"/>
         <path d="M82,78 L92,140" stroke="#38bdf8" stroke-width="7" stroke-linecap="round"/>
@@ -35,7 +35,7 @@
     <g transform="translate(45,655)">
       <rect width="730" height="250" rx="14" fill="#f7fafc" stroke="#c7d5e2"/>
       <text x="25" y="34" font-size="20" font-weight="700" fill="#1e3448">shift (2,2)</text>
-      <g transform="translate(192,57)">
+      <g transform="translate(300,74)">
         <rect x="20" y="15" width="110" height="155" rx="10" fill="#e8eef4"/>
         <circle cx="65" cy="55" r="26" fill="none" stroke="#38bdf8" stroke-width="7"/>
         <path d="M82,78 L92,140" stroke="#38bdf8" stroke-width="7" stroke-linecap="round"/>

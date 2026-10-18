@@ -4,7 +4,7 @@
 
 **莫克陶**
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23461038.svg)](https://doi.org/10.5281/zenodo.23461038)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23461123.svg)](https://doi.org/10.5281/zenodo.23461123)
 
 这个仓库收录一篇面向非专业读者的论文，包括中文版、英文版、PDF，以及论文中的三张图。
 
@@ -83,5 +83,5 @@ Start with the [English PDF](paper/pixel-to-concept.en.pdf) or the [English Mark
 
 ## 版本
 
-- v1.0.0：第一次公开的读者版，见 [GitHub Release](https://github.com/poerlang/pixel-to-concept-reader/releases/tag/v1.0.0)。
-- DOI: [10.5281/zenodo.23461038](https://doi.org/10.5281/zenodo.23461038)
+- v1.1.0：修正图 3 的平移幅度，使 shift 更明显；DOI: [10.5281/zenodo.23461123](https://doi.org/10.5281/zenodo.23461123)
+- v1.0.0：第一次公开的读者版；DOI: [10.5281/zenodo.23461038](https://doi.org/10.5281/zenodo.23461038)
