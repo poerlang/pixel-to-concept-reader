@@ -81,4 +81,4 @@ Start with the [English PDF](paper/pixel-to-concept.en.pdf) or the [English Mark
 
 ## 版本
 
-- v1.0.0：第一次公开的读者版（GitHub Release）。
+- v1.0.0：第一次公开的读者版，见 [GitHub Release](https://github.com/poerlang/pixel-to-concept-reader/releases/tag/v1.0.0)。
