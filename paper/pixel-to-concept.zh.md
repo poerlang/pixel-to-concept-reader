@@ -23,7 +23,7 @@
 
 **关键词**：非公理推理；NARS；结构词项；操作差；相对布局；视觉识别
 
-![图 1：上半是常见的“只给答案”；下半是本文“把关系说出来”](assets/overview-zh.png)
+![图 1：上半是常见的“只给答案”；下半是本文“把关系说出来”](../figures/overview-zh.png)
 
 ## 1. 引言
 
@@ -157,11 +157,11 @@ M → T1, M → T2  ⇒  M → (T1 ∩ T2)
 
 图 2 给出用于 curriculum 的经典图形。纯圆主要表现为累计约一整圈；直线没有累计；角只有 1/4 圈；S 形出现碎片化累计；8 有多个方向的累计和两个空白中心；9 是一个闭合加一个 1/4 累计和一个开放尾。它们只作结构词项的可解释参照，并不作为训练类别。
 
-![图 2：经典图形 curriculum](assets/classic-figures-vertical.png)
+![图 2：经典图形 curriculum](../figures/classic-figures-vertical.png)
 
 图 3 给出相对布局的平移验证：同一经典 9 平移 0/1/2 格后，43 个布局词项全部一致。绝对坐标会改变，相对关系不改变。
 
-![图 3：相对布局平移不变](assets/layout-invariance-vertical.png)
+![图 3：相对布局平移不变](../figures/layout-invariance-vertical.png)
 
 ### 4.3 失败分析
 

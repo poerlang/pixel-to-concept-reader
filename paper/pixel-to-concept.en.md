@@ -23,7 +23,7 @@ This paper reports a handwritten digit recognition experiment. The system stores
 
 **Keywords:** non-axiomatic reasoning; NARS; structural terms; operation difference; relative layout; visual recognition
 
-![Figure 1: Top, the usual “answer only” path; bottom, this paper’s “state the relations” path](assets/overview-en.png)
+![Figure 1: Top, the usual “answer only” path; bottom, this paper’s “state the relations” path](../figures/overview-en.png)
 
 ## 1. Introduction
 
@@ -157,11 +157,11 @@ We use 16×16 handwritten digits: 80 training and 20 test images per class, 200 
 
 Figure 2 shows the classic figures used as a curriculum. A pure circle is mainly accumulated full rotation; a straight line has no accumulation; an angle has a quarter rotation; an S-curve has fragmented accumulation; an 8 has multiple accumulation directions and two blank centers; a 9 is one closure plus a quarter rotation and an open tail. These are not training classes; they are interpretable references for structural terms.
 
-![Figure 2: Classic figures as a curriculum](assets/classic-figures-vertical.png)
+![Figure 2: Classic figures as a curriculum](../figures/classic-figures-vertical.png)
 
 Figure 3 reports the layout test: after shifting a classic 9 by 0/1/2 cells, all 43 layout terms remain identical. Absolute coordinates would change; relative relations do not.
 
-![Figure 3: Relative layout is invariant under translation](assets/layout-invariance-vertical.png)
+![Figure 3: Relative layout is invariant under translation](../figures/layout-invariance-vertical.png)
 
 ### 4.3 Failure analysis
 
