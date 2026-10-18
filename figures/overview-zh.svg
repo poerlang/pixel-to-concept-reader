@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200">
+  <rect width="900" height="1200" fill="#ffffff"/>
+  <g font-family="Arial, Microsoft YaHei, sans-serif">
+    <text x="45" y="62" font-size="34" font-weight="700" fill="#162536">看一张手写数字，有两条路</text>
+    <text x="45" y="98" font-size="22" fill="#5b7083">一条只给答案；一条把理由说出来。</text>
+
+    <rect x="45" y="125" width="810" height="350" rx="16" fill="#f7fafc" stroke="#c7d5e2"/>
+    <text x="70" y="172" font-size="28" font-weight="700" fill="#1e3448">A. 常见做法：只给答案</text>
+
+    <g transform="translate(70,205)">
+      <rect width="120" height="100" fill="#111c26"/>
+      <g transform="translate(10,5) scale(1.2)" fill="#6ee7b7">
+        <rect x="35" y="13" width="4.6" height="4.6"/><rect x="40" y="13" width="4.6" height="4.6"/><rect x="45" y="13" width="4.6" height="4.6"/><rect x="50" y="13" width="4.6" height="4.6"/><rect x="55" y="13" width="4.6" height="4.6"/><rect x="60" y="13" width="4.6" height="4.6"/>
+        <rect x="30" y="18" width="4.6" height="4.6"/><rect x="35" y="18" width="4.6" height="4.6"/><rect x="60" y="18" width="4.6" height="4.6"/><rect x="65" y="18" width="4.6" height="4.6"/>
+        <rect x="30" y="23" width="4.6" height="4.6"/><rect x="35" y="23" width="4.6" height="4.6"/><rect x="60" y="23" width="4.6" height="4.6"/><rect x="65" y="23" width="4.6" height="4.6"/>
+        <rect x="30" y="28" width="4.6" height="4.6"/><rect x="35" y="28" width="4.6" height="4.6"/><rect x="60" y="28" width="4.6" height="4.6"/><rect x="65" y="28" width="4.6" height="4.6"/>
+        <rect x="30" y="33" width="4.6" height="4.6"/><rect x="35" y="33" width="4.6" height="4.6"/><rect x="60" y="33" width="4.6" height="4.6"/><rect x="65" y="33" width="4.6" height="4.6"/>
+        <rect x="35" y="38" width="4.6" height="4.6"/><rect x="40" y="38" width="4.6" height="4.6"/><rect x="45" y="38" width="4.6" height="4.6"/><rect x="50" y="38" width="4.6" height="4.6"/><rect x="55" y="38" width="4.6" height="4.6"/><rect x="60" y="38" width="4.6" height="4.6"/>
+        <rect x="55" y="43" width="4.6" height="4.6"/><rect x="60" y="43" width="4.6" height="4.6"/>
+        <rect x="55" y="48" width="4.6" height="4.6"/><rect x="60" y="48" width="4.6" height="4.6"/>
+        <rect x="55" y="53" width="4.6" height="4.6"/><rect x="60" y="53" width="4.6" height="4.6"/>
+        <rect x="50" y="58" width="4.6" height="4.6"/><rect x="55" y="58" width="4.6" height="4.6"/>
+        <rect x="45" y="63" width="4.6" height="4.6"/><rect x="50" y="63" width="4.6" height="4.6"/>
+        <rect x="45" y="68" width="4.6" height="4.6"/>
+      </g>
+    </g>
+
+    <g stroke="#46627a" stroke-width="3" fill="none">
+      <path d="M210,255 L265,255"/><path d="M560,255 L610,255"/>
+    </g>
+    <path d="M265,247 L277,255 L265,263" fill="none" stroke="#46627a" stroke-width="3"/>
+    <path d="M610,247 L622,255 L610,263" fill="none" stroke="#46627a" stroke-width="3"/>
+
+    <rect x="290" y="207" width="240" height="96" rx="12" fill="#ffffff" stroke="#9aa9b7"/>
+    <text x="410" y="247" text-anchor="middle" font-size="25" fill="#1e3448">训练好的模型</text>
+    <text x="410" y="279" text-anchor="middle" font-size="22" fill="#5b7083">中间是黑箱</text>
+
+    <text x="650" y="278" font-size="62" font-weight="700" fill="#1e3448">9</text>
+    <text x="70" y="370" font-size="23" fill="#5b7083">能识别，但为什么是 9？很难说清。</text>
+
+    <rect x="45" y="505" width="810" height="620" rx="16" fill="#f7fafc" stroke="#c7d5e2"/>
+    <text x="70" y="552" font-size="28" font-weight="700" fill="#1e3448">B. 本实验：把关系说出来</text>
+
+    <g transform="translate(70,590)">
+      <rect width="120" height="100" fill="#111c26"/>
+      <g transform="translate(10,5) scale(1.2)" fill="#6ee7b7">
+        <rect x="35" y="13" width="4.6" height="4.6"/><rect x="40" y="13" width="4.6" height="4.6"/><rect x="45" y="13" width="4.6" height="4.6"/><rect x="50" y="13" width="4.6" height="4.6"/><rect x="55" y="13" width="4.6" height="4.6"/><rect x="60" y="13" width="4.6" height="4.6"/>
+        <rect x="30" y="18" width="4.6" height="4.6"/><rect x="35" y="18" width="4.6" height="4.6"/><rect x="60" y="18" width="4.6" height="4.6"/><rect x="65" y="18" width="4.6" height="4.6"/>
+        <rect x="30" y="23" width="4.6" height="4.6"/><rect x="35" y="23" width="4.6" height="4.6"/><rect x="60" y="23" width="4.6" height="4.6"/><rect x="65" y="23" width="4.6" height="4.6"/>
+        <rect x="30" y="28" width="4.6" height="4.6"/><rect x="35" y="28" width="4.6" height="4.6"/><rect x="60" y="28" width="4.6" height="4.6"/><rect x="65" y="28" width="4.6" height="4.6"/>
+        <rect x="30" y="33" width="4.6" height="4.6"/><rect x="35" y="33" width="4.6" height="4.6"/><rect x="60" y="33" width="4.6" height="4.6"/><rect x="65" y="33" width="4.6" height="4.6"/>
+        <rect x="35" y="38" width="4.6" height="4.6"/><rect x="40" y="38" width="4.6" height="4.6"/><rect x="45" y="38" width="4.6" height="4.6"/><rect x="50" y="38" width="4.6" height="4.6"/><rect x="55" y="38" width="4.6" height="4.6"/><rect x="60" y="38" width="4.6" height="4.6"/>
+        <rect x="55" y="43" width="4.6" height="4.6"/><rect x="60" y="43" width="4.6" height="4.6"/>
+        <rect x="55" y="48" width="4.6" height="4.6"/><rect x="60" y="48" width="4.6" height="4.6"/>
+        <rect x="55" y="53" width="4.6" height="4.6"/><rect x="60" y="53" width="4.6" height="4.6"/>
+        <rect x="50" y="58" width="4.6" height="4.6"/><rect x="55" y="58" width="4.6" height="4.6"/>
+        <rect x="45" y="63" width="4.6" height="4.6"/><rect x="50" y="63" width="4.6" height="4.6"/>
+        <rect x="45" y="68" width="4.6" height="4.6"/>
+      </g>
+    </g>
+
+    <g stroke="#46627a" stroke-width="3" fill="none">
+      <path d="M190,640 L216,640"/><path d="M420,640 L446,640"/><path d="M730,640 L751,640"/>
+    </g>
+    <path d="M216,632 L228,640 L216,648" fill="none" stroke="#46627a" stroke-width="3"/>
+    <path d="M446,632 L458,640 L446,648" fill="none" stroke="#46627a" stroke-width="3"/>
+    <path d="M751,632 L763,640 L751,648" fill="none" stroke="#46627a" stroke-width="3"/>
+
+    <rect x="230" y="590" width="190" height="100" rx="12" fill="#ffffff" stroke="#9aa9b7"/>
+    <text x="325" y="630" text-anchor="middle" font-size="24" fill="#1e3448">初步小片</text>
+    <text x="325" y="660" text-anchor="middle" font-size="22" fill="#5b7083">多个亮点</text>
+
+    <rect x="460" y="575" width="270" height="130" rx="12" fill="#ffffff" stroke="#9aa9b7"/>
+    <text x="595" y="612" text-anchor="middle" font-size="24" fill="#1e3448">结构关系</text>
+    <text x="595" y="644" text-anchor="middle" font-size="22" fill="#5b7083">走法、转弯、</text>
+    <text x="595" y="672" text-anchor="middle" font-size="22" fill="#5b7083">重复、闭合、位置</text>
+
+    <rect x="765" y="590" width="52" height="100" rx="8" fill="#e8f2ff" stroke="#9cc0e8"/>
+    <text x="791" y="652" text-anchor="middle" font-size="40" font-weight="700" fill="#1e5a95">9</text>
+
+    <text x="70" y="790" font-size="24" fill="#1e3448">8：上下两个圈，中间收窄。</text>
+    <text x="70" y="830" font-size="24" fill="#1e3448">9：上面一个圈，下面一条尾巴。</text>
+    <text x="70" y="890" font-size="22" fill="#5b7083">每个关系都能用日常语言检查。</text>
+
+    <rect x="70" y="930" width="750" height="140" rx="12" fill="#fff7e6" stroke="#e8c98a"/>
+    <text x="95" y="975" font-size="24" font-weight="700" fill="#6b4b13">系统最后做什么？</text>
+    <text x="95" y="1012" font-size="22" fill="#6b4b13">把这些关系和记忆中的数字比较；</text>
+    <text x="95" y="1042" font-size="22" fill="#6b4b13">允许不确定，也允许修正，最后选更像的。</text>
+  </g>
+</svg>

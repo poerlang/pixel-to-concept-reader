@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1220" viewBox="0 0 900 1220">
+  <rect width="900" height="1220" fill="#ffffff"/>
+  <text x="40" y="45" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="28" font-weight="700" fill="#162536">Classic figures as a curriculum</text>
+  <text x="40" y="70" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="15" fill="#5b7083">One structural vocabulary should explain all six; portrait layout for printing.</text>
+
+  <g font-family="Segoe UI, Microsoft YaHei, sans-serif">
+    <g transform="translate(35,100)">
+      <rect width="400" height="300" rx="14" fill="#ffffff" stroke="#c7d5e2"/>
+      <text x="20" y="30" font-size="20" font-weight="700" fill="#1e3448">Pure circle</text>
+      <text x="20" y="50" font-size="14" fill="#5b7083">one full rotation</text>
+      <g transform="translate(200,150)">
+        <circle r="72" fill="none" stroke="#3fbf8f" stroke-width="11"/>
+      </g>
+      <text x="20" y="255" font-size="16" fill="#1e3448">accum 4 · closure may be absent</text>
+      <text x="20" y="275" font-size="14" fill="#5b7083">a circle is accumulated rotation.</text>
+    </g>
+
+    <g transform="translate(465,100)">
+      <rect width="400" height="300" rx="14" fill="#ffffff" stroke="#c7d5e2"/>
+      <text x="20" y="30" font-size="20" font-weight="700" fill="#1e3448">Straight line</text>
+      <text x="20" y="50" font-size="14" fill="#5b7083">no accumulated rotation</text>
+      <g transform="translate(205,150)">
+        <path d="M-95,0 L95,0" stroke="#5b8def" stroke-width="11" stroke-linecap="round"/>
+      </g>
+      <text x="20" y="255" font-size="16" fill="#1e3448">no accum · only local shift diff</text>
+      <text x="20" y="275" font-size="14" fill="#5b7083">a line is not a thin circle.</text>
+    </g>
+
+    <g transform="translate(35,430)">
+      <rect width="400" height="300" rx="14" fill="#ffffff" stroke="#c7d5e2"/>
+      <text x="20" y="30" font-size="20" font-weight="700" fill="#1e3448">Angle</text>
+      <text x="20" y="50" font-size="14" fill="#5b7083">one quarter rotation</text>
+      <g transform="translate(205,150)">
+        <path d="M-65,60 L-65,-60 L65,-60" fill="none" stroke="#f0a44b" stroke-width="11" stroke-linecap="round"/>
+      </g>
+      <text x="20" y="255" font-size="16" fill="#1e3448">accum 1 · no full ring</text>
+      <text x="20" y="275" font-size="14" fill="#5b7083">do not confuse an arc with a circle.</text>
+    </g>
+
+    <g transform="translate(465,430)">
+      <rect width="400" height="300" rx="14" fill="#ffffff" stroke="#c7d5e2"/>
+      <text x="20" y="30" font-size="20" font-weight="700" fill="#1e3448">S-curve</text>
+      <text x="20" y="50" font-size="14" fill="#5b7083">two opposite rotations</text>
+      <g transform="translate(205,150)">
+        <path d="M-85,45 C-35,-65 35,65 85,-45" fill="none" stroke="#a78bfa" stroke-width="11" stroke-linecap="round"/>
+      </g>
+      <text x="20" y="255" font-size="16" fill="#1e3448">fragmented accum · false closure</text>
+      <text x="20" y="275" font-size="14" fill="#5b7083">a curve is not a circle with a hole.</text>
+    </g>
+
+    <g transform="translate(35,760)">
+      <rect width="400" height="300" rx="14" fill="#ffffff" stroke="#c7d5e2"/>
+      <text x="20" y="30" font-size="20" font-weight="700" fill="#1e3448">Eight</text>
+      <text x="20" y="50" font-size="14" fill="#5b7083">two rings, one waist</text>
+      <g transform="translate(205,135)">
+        <circle cy="-50" r="46" fill="none" stroke="#ef6f9b" stroke-width="10"/>
+        <circle cy="50" r="46" fill="none" stroke="#ef6f9b" stroke-width="10"/>
+      </g>
+      <text x="20" y="255" font-size="16" fill="#1e3448">multiple accum directions</text>
+      <text x="20" y="275" font-size="14" fill="#5b7083">two blank centers, not one loop.</text>
+    </g>
+
+    <g transform="translate(465,760)">
+      <rect width="400" height="300" rx="14" fill="#ffffff" stroke="#c7d5e2"/>
+      <text x="20" y="30" font-size="20" font-weight="700" fill="#1e3448">Nine</text>
+      <text x="20" y="50" font-size="14" fill="#5b7083">one ring + a tail</text>
+      <g transform="translate(195,155)">
+        <circle cx="-5" cy="-40" r="45" fill="none" stroke="#38bdf8" stroke-width="10"/>
+        <path d="M30,5 L55,85" stroke="#38bdf8" stroke-width="10" stroke-linecap="round"/>
+      </g>
+      <text x="20" y="255" font-size="16" fill="#1e3448">closure + accum 1 · open tail</text>
+      <text x="20" y="275" font-size="14" fill="#5b7083">the tail must not be swallowed by the ring.</text>
+    </g>
+  </g>
+</svg>

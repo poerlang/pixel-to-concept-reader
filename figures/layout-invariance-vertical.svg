@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="1120" viewBox="0 0 820 1120">
+  <rect width="820" height="1120" fill="#ffffff"/>
+  <text x="40" y="45" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="27" font-weight="700" fill="#162536">Relative layout is invariant under translation</text>
+  <text x="40" y="70" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="17" fill="#5b7083">The object moves; its relations to the object frame stay the same.</text>
+
+  <g font-family="Segoe UI, Microsoft YaHei, sans-serif">
+    <g transform="translate(45,105)">
+      <rect width="730" height="250" rx="14" fill="#f7fafc" stroke="#c7d5e2"/>
+      <text x="25" y="34" font-size="20" font-weight="700" fill="#1e3448">shift (0,0)</text>
+      <g transform="translate(180,45)">
+        <rect x="20" y="15" width="110" height="155" rx="10" fill="#e8eef4"/>
+        <circle cx="65" cy="55" r="26" fill="none" stroke="#38bdf8" stroke-width="7"/>
+        <path d="M82,78 L92,140" stroke="#38bdf8" stroke-width="7" stroke-linecap="round"/>
+        <g fill="#3fbf8f"><circle cx="65" cy="55" r="3"/><circle cx="92" cy="140" r="3"/><circle cx="82" cy="78" r="3"/></g>
+      </g>
+      <text x="500" y="120" font-size="28" font-weight="700" fill="#1e5a95">43</text>
+      <text x="500" y="145" font-size="16" fill="#46627a">layout terms</text>
+      <text x="500" y="165" font-size="16" fill="#46627a">same as baseline</text>
+    </g>
+
+    <g transform="translate(45,380)">
+      <rect width="730" height="250" rx="14" fill="#f7fafc" stroke="#c7d5e2"/>
+      <text x="25" y="34" font-size="20" font-weight="700" fill="#1e3448">shift (1,1)</text>
+      <g transform="translate(186,51)">
+        <rect x="20" y="15" width="110" height="155" rx="10" fill="#e8eef4"/>
+        <circle cx="65" cy="55" r="26" fill="none" stroke="#38bdf8" stroke-width="7"/>
+        <path d="M82,78 L92,140" stroke="#38bdf8" stroke-width="7" stroke-linecap="round"/>
+        <g fill="#3fbf8f"><circle cx="65" cy="55" r="3"/><circle cx="92" cy="140" r="3"/><circle cx="82" cy="78" r="3"/></g>
+      </g>
+      <text x="500" y="120" font-size="28" font-weight="700" fill="#1e5a95">43</text>
+      <text x="500" y="145" font-size="16" fill="#46627a">layout terms</text>
+      <text x="500" y="165" font-size="16" fill="#46627a">same as baseline</text>
+    </g>
+
+    <g transform="translate(45,655)">
+      <rect width="730" height="250" rx="14" fill="#f7fafc" stroke="#c7d5e2"/>
+      <text x="25" y="34" font-size="20" font-weight="700" fill="#1e3448">shift (2,2)</text>
+      <g transform="translate(192,57)">
+        <rect x="20" y="15" width="110" height="155" rx="10" fill="#e8eef4"/>
+        <circle cx="65" cy="55" r="26" fill="none" stroke="#38bdf8" stroke-width="7"/>
+        <path d="M82,78 L92,140" stroke="#38bdf8" stroke-width="7" stroke-linecap="round"/>
+        <g fill="#3fbf8f"><circle cx="65" cy="55" r="3"/><circle cx="92" cy="140" r="3"/><circle cx="82" cy="78" r="3"/></g>
+      </g>
+      <text x="500" y="120" font-size="28" font-weight="700" fill="#1e5a95">43</text>
+      <text x="500" y="145" font-size="16" fill="#46627a">layout terms</text>
+      <text x="500" y="165" font-size="16" fill="#46627a">same as baseline</text>
+    </g>
+
+    <g transform="translate(45,950)">
+      <rect width="730" height="120" rx="12" fill="#e8f2ff" stroke="#9cc0e8"/>
+      <text x="365" y="48" text-anchor="middle" font-size="34" font-weight="700" fill="#1e5a95">43 / 43</text>
+      <text x="365" y="78" text-anchor="middle" font-size="17" fill="#46627a">layout terms unchanged under all translations</text>
+      <text x="365" y="100" text-anchor="middle" font-size="15" fill="#5b7083">absolute coordinates would change; relative terms do not.</text>
+    </g>
+  </g>
+</svg>
