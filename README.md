@@ -78,3 +78,7 @@ The system groups bright pixels into rough circular patches, records steps, turn
 The prototype reaches 81.0% on 200 test images. The paper also reports confusions between 8 and 9 and the current limits of the approach.
 
 Start with the [English PDF](paper/pixel-to-concept.en.pdf) or the [English Markdown](paper/pixel-to-concept.en.md).
+
+## 版本
+
+- v1.0.0：第一次公开的读者版（GitHub Release）。

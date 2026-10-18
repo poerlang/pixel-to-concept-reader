@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this paper, please cite the version below."
+title: "操作差与相对布局：一个基于 NAL 的结构词项识别实验"
+abstract: "A reader-friendly paper on structural terms, operation differences, relative layout, and NAL-based handwritten digit recognition."
+authors:
+  - family-names: "Mo"
+    given-names: "Ketai"
+    alias: "莫克陶"
+type: preprint
+version: "1.0.0"
+date-released: "2026-10-19"
+url: "https://github.com/poerlang/pixel-to-concept-reader"
+repository-code: "https://github.com/poerlang/pixel-to-concept-reader"
