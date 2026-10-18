@@ -4,6 +4,8 @@
 
 **莫克陶**
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23461038.svg)](https://doi.org/10.5281/zenodo.23461038)
+
 这个仓库收录一篇面向非专业读者的论文，包括中文版、英文版、PDF，以及论文中的三张图。
 
 论文讨论一个具体问题：计算机能否把“为什么把这张图认成 9”写成一组可检查的关系，并用这些关系完成识别。
@@ -82,3 +84,4 @@ Start with the [English PDF](paper/pixel-to-concept.en.pdf) or the [English Mark
 ## 版本
 
 - v1.0.0：第一次公开的读者版，见 [GitHub Release](https://github.com/poerlang/pixel-to-concept-reader/releases/tag/v1.0.0)。
+- DOI: [10.5281/zenodo.23461038](https://doi.org/10.5281/zenodo.23461038)
