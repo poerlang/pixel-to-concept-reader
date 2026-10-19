@@ -63,6 +63,8 @@ figures/
   classic-figures-vertical.png
   layout-invariance-vertical.png
   report-interface.png       测试报告界面
+report/
+  index.html                 独立测试报告（HTML）
 audio/
   pixel-to-concept.zh.mp3    中文可听版（约 11 分钟）
   pixel-to-concept.zh.script.txt
@@ -73,6 +75,10 @@ code/
 ```
 
 所有图都提供 SVG 源文件，方便打印或二次排版。
+
+## 交互报告
+
+- [打开独立测试报告](report/index.html)：单个 HTML，约 3 MB，内嵌 200 个测试样本、逐样本答案、候选圆与 Shift 链；不需要服务器。
 
 ## 音频
 
