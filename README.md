@@ -61,6 +61,9 @@ figures/
   overview-en.png             English overview
   classic-figures-vertical.png
   layout-invariance-vertical.png
+audio/
+  pixel-to-concept.zh.mp3    中文可听版（约 11 分钟）
+  pixel-to-concept.zh.script.txt
 code/
   README.md                  代码说明、数据格式、运行命令
   src/                       NAL 与感知代码
@@ -68,6 +71,11 @@ code/
 ```
 
 所有图都提供 SVG 源文件，方便打印或二次排版。
+
+## 音频
+
+- [中文可听版 MP3](audio/pixel-to-concept.zh.mp3)：约 11 分钟；
+- [朗读稿](audio/pixel-to-concept.zh.script.txt)：只含可朗读的正文，已省略公式、表格、代码和参考文献。
 
 ## 代码
 
