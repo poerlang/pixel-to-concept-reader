@@ -67,7 +67,7 @@ npm run translation
 npm run layout
 ```
 
-The reported result is **81.0% (162/200)** on the 200-image test set. The code does not use a classifier, kNN, a decision tree, or template matching; comparison, revision, and questioning are done in NAL.
+The reported result is **82.0% (164/200)** on the 200-image test set. The code does not use a classifier, kNN, a decision tree, or template matching; comparison, revision, and questioning are done in NAL.
 
 ## Scope
 

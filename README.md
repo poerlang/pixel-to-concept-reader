@@ -27,12 +27,12 @@
 - 这些关系被写成 NAL 词项，和记忆中的数字比较；
 - 识别阶段不使用 softmax、kNN、决策树或模板匹配。
 
-在 200 张测试样本上，系统取得 **81.0%** 的正确率。论文也报告了数字 8 与 9 的混淆，以及当前的主要瓶颈。
+在 200 张测试样本上，系统取得 **82.0%** 的正确率。论文也报告了数字 8 与 9 的混淆，以及当前的主要瓶颈。
 
 ## 这篇论文的边界
 
 - 它是一个独立的工程实验，不主张新的 NAL 视觉理论；
-- 81.0% 不是 MNIST 的最好结果，也不证明通用视觉；
+- 82.0% 不是 MNIST 的最好结果，也不证明通用视觉；
 - 结构词表由人工设计；
 - 它不声称复制人脑，也不把“词项”等同于人类概念；
 - 8 与 9 等样本仍会失败。
@@ -43,10 +43,11 @@
 
 图 1 用两条路径说明论文的出发点：一条只给答案，另一条把关系逐步说出来。
 
-其余两张图：
+其余三张图：
 
 - [图 2：经典图形作为结构词项的参照](figures/classic-figures-vertical.png)
 - [图 3：相对布局在平移后保持不变](figures/layout-invariance-vertical.png)
+- [图 4：测试报告界面](figures/report-interface.png)
 
 ## 文件结构
 
@@ -61,6 +62,7 @@ figures/
   overview-en.png             English overview
   classic-figures-vertical.png
   layout-invariance-vertical.png
+  report-interface.png       测试报告界面
 audio/
   pixel-to-concept.zh.mp3    中文可听版（约 11 分钟）
   pixel-to-concept.zh.script.txt
@@ -85,7 +87,7 @@ code/
 - `src/nars` 是通用 NAL 部分，`src/perception` 是像素到结构词项的感知部分；
 - 训练/测试命令在 `code/` 目录运行；
 - MNIST 二进制数据不随仓库分发，格式和放置位置写在代码说明里；
-- 用同一份数据跑过：200 张测试，**162/200 = 81.0%**。
+- 用同一份数据跑过：200 张测试，**164/200 = 82.0%**。
 
 ## 引用
 
@@ -99,7 +101,7 @@ This repository contains a reader-friendly paper on handwritten digit recognitio
 
 The system groups bright pixels into rough circular patches, records steps, turns, repetition, closure, and relative positions, and compares these relations with remembered digits. Recognition uses NAL comparison, revision, and questioning, with no standard classifier.
 
-The prototype reaches 81.0% on 200 test images. The paper also reports confusions between 8 and 9 and the current limits of the approach.
+The prototype reaches 82.0% on 200 test images. The paper also reports confusions between 8 and 9 and the current limits of the approach.
 
 Start with the [English PDF](paper/pixel-to-concept.en.pdf) or the [English Markdown](paper/pixel-to-concept.en.md).
 
