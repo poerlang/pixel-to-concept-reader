@@ -408,8 +408,9 @@ const band = stepMatch ? (directionMatch ? "low" : "high") : null;
 ### 4.8 训练与词表（K18–K21）
 
 - 词表：所有帧的观察并集（不看标签）；预算=频次/耐久度（不看标签）。
-- 记忆：`digit_d → [term]` 的 `c` 用 `n/(n+k)`（`n`=该类样本数，`k=PRIOR_EVIDENCE`），
-  不再硬编码 0.99；`f` 仍是类内出现率（这是类原型的定义）。
+- 记忆：`digit_d → [term]` 的真值由**逐样本证据的 `revision`** 得到（每个样本一次
+  `{f:出现?1:0, c:0.9}`），不再硬编码 `0.99`，也不再用 `n/(n+k)` 公式；
+  `f` 是证据修订后的频率（与类内出现率一致）。
 - 增强：改成“自移位经验”（同一帧的多个相对位置），但**不参与词表选择**。
 
 ---
@@ -454,6 +455,7 @@ const band = stepMatch ? (directionMatch ? "low" : "high") : null;
 | walk | `MERGE_TURN` | 合并处允许的最大转角（好连续） | 0.55π |
 | 闭合 | `CLOSURE` | 子轮廓首尾距离 / (r1+r2) 上限 | 1.15 |
 | 闭合 | `MIN_CONTOUR_SPAN` | 子轮廓周长 / (r1+r2) 下限 | 2.5 |
+| 闭合 | `MIN_CONTOUR_AREA` | 子轮廓面积 / (r1+r2)² 下限 | 1.2 |
 | walk | `MIN_PRIORITY` | 低于此不再回袋 | 0.02 |
 | 量化 | `SECTORS` | 方向扇区数 | 8 |
 | 量化 | `DIST_CUTS` | 相对距离桶 | [0.5, 1, 1.5, 2.5] |
@@ -461,14 +463,14 @@ const band = stepMatch ? (directionMatch ? "low" : "high") : null;
 | 量化 | `STEP_CUTS` | 相对步长桶 | [0.75, 1.33] |
 | 量化 | `TURN_CUTS` | 累计转角（四分之一圈） | π/2 |
 | 注意 | `OBS_CAPACITY` | 观察缓冲容量 | 全量→预算 |
-| 注意 | `COMPOSE_TOP` | 每观察集参与训练侧交集枚举的条数 | 2 |
-| 注意 | `COMPOSE_LIMIT` | 引擎每帧最多引入多少条复合 | 12 |
+| 注意 | `COMPOSE_LIMIT` | 推断时引擎每帧最多引入多少条复合 | 12 |
+| 注意 | `TRAIN_COMPOSE_LIMIT` | 训练时每个观察集最多引入多少条复合 | 6 |
+| 注意 | `TRAIN_CYCLES` | 训练侧每个观察集的推理周期 | 1500 |
 | 注意 | `CYCLES_PER_FRAME` / `CYCLES_FALLBACK` | 每个观察集 / 回退单集的推理周期上限 | 20000 / 60000 |
 | 证据 | `PRESENT_F` | 观察“出现”的频率读数 | 0.99 |
 | 证据 | `ABSENT_F` | 观察“未出现”的频率读数 | 0.01 |
 | 证据 | `OBSERVATION_C` | 单次观察的置信度 | 0.9 |
 | 证据 | `OBS_PRIORITY` | 单次观察进缓冲的优先级 | 0.6 |
-| 证据 | `PRIOR_EVIDENCE` | 原型置信度的先验样本数 k | 2 |
 | 序列 | `NGRAM_MAX` | 最大 n | 2 |
 | 合并 | `MERGE` | 观察集合并策略 | revision |
 
@@ -487,7 +489,7 @@ const band = stepMatch ? (directionMatch ? "low" : "high") : null;
 | 5 | **完成（首版）** | 删 `chainCompounds` 手拼；`nars/compose.ts` 新增 `composeAll`（每观察集只取前 `COMPOSE_TOP` 条两两引入），`baby` 用它生成 ∩ 观察；`COMPOSE_TOP` 默认 2 | 真正的 `Engine.compose` 端到端训练留待后续 |
 | 6 | **完成（首版）** | 删 `parts.ts`、`blocks.ts`、`rings.ts`、`partition-report.ts`；删 parts/partBlob/partRelation/blocks/graph 模式；`figures.ts` 移到 `tools/figures.ts`；`composeProperties` 并入 `src/nars/compose.ts` | 环碎片化 → 走法端点优先（见 §7.5） |
 | 7 | **完成** | 删 `STRUCTURE_MODE` 开关板；`StructureMode` 只剩 `directionThreshold`；删 `chainOrder/degree`、`dedupChains`、`bigrams`/`chainCompounds` 开关、类间方差预算、平移增强、`blk_/cmp_` 过滤；环境变量改 `PD6_*` | 仅保留训练/评估/探针配置 |
-| 8 | **部分** | README/structure/perception/directive/boundaries/HANDOFF 已重写；旧 `mechanism-audit` 等删除；类原型 `c` 改为 `n/(n+k)`（`PRIOR_EVIDENCE=2`） | 论文/报告叙事；真正的引擎内复合 |
+| 8 | **部分** | README/structure/perception/directive/boundaries/HANDOFF 已重写；旧 `mechanism-audit` 等删除；类原型真值改为逐样本证据 revision | 论文/报告叙事；G6 的“逐事件入记忆”仍压缩为原型 |
 
 ### 7.1 第 0 阶段删除记录（提交信息同步）
 
@@ -602,25 +604,39 @@ const band = stepMatch ? (directionMatch ? "low" : "high") : null;
 
 - **残余的通用工作**（不是 MNIST 专用）：
   1. C16：闭合残余，用“好连续真值/包围底区域”细化；
-  2. G7：真正的 `Engine.compose`（当前 `composeAll` 是推理侧预计算）；
-  3. G6：逐样本事件入记忆（当前是 `digit_d → [term]` 类频原型 + `c=n/(n+k)`）。
+  2. G7：已完成首版——推断与训练都由 `Engine.compose` 引入 `∩`；
+  3. G6：逐样本事件入记忆（当前用逐样本证据 revision 压缩成类原型，不存每个 `frame_i`）。
 
 - 完成度口径：**D/X 100% 删除；S 21/21 关闭（16 迁移 + 5 重分类）；MNIST 专用语义 0 项。**
-  剩余是通用结构质量（C16）与两个通用架构缺口（G7/G6），不以分数衡量。
+  剩余是通用结构质量（C16）与 G6 的“逐事件入记忆”，不以分数衡量。
 
-### 7.15 G7 首版：交集引入进入 Engine 工作周期
+### 7.15 G7：交集引入进入 Engine（推断 + 训练）
 
 - `EngineOptions` 增加 `composeLimit`；`Engine.step` 在**事件缓冲**上做交集引入：
   当前任务与其它待处理观察共享主项时，`composeIntersection` 产生 `frame → ∩(...)`，
   作为临时信念 + 任务继续参与推理，最多 `COMPOSE_LIMIT` 条/帧。
 - 复合结论不再由 `baby` 预计算后当观察喂入：`ask` 只喂基础观察（过滤 `∩(` 词项），
   引擎自己引入复合；`memory.forget(frame)` 在问完后清掉临时概念。
-- 训练侧仍用 `composeAll` **枚举**每个观察集里的共现复合，用于估计类原型（不看标签）；
-  推断侧的复合则完全由引擎产生。这是“训练估计原型、推断走引擎”的分工，不是把
-  `composeAll` 当引擎。
+- **训练侧也走引擎**：`composedByEngine` 对每个观察集建一个一次性 `Memory`，喂入基础观察，
+  `Engine.compose` 引入复合；收集 `engine.composedTerms`（复合谓词 key）计入类原型。
+  `composeAll` 已删除。
+- 参数：`COMPOSE_LIMIT=12`（推断）、`TRAIN_COMPOSE_LIMIT=6` + `TRAIN_CYCLES=1500`（训练）。
 - 验证：`Engine` 在 `learn=false` 下对三个同主项观察可引入 4 条复合（探针）；
-  `train/test` 正常；`composeLimit` 进账本。
-- 仍待做：训练侧也改成“引擎跑一遍经验”，以及让类原型从逐样本事件长出 `∩` 词项（G6）。
+  `train/test` 正常；训练后词表 579 种 / 5790 概念 / 519 KB（比枚举版 409/4090/345 KB 大，
+  因为引擎实际产生的复合按经验预算保留）。
+- 仍待做：G6 逐样本事件入记忆，让 `∩` 原型也能从逐样本证据修订，而不是一次性类频。
+
+### 7.16 C16：闭合子轮廓的面积下限
+
+- 探针显示闭合子段的 **多边形面积 / (r1+r2)²** 能把真假轮廓分开：
+  纯圆 16.9、双圈 3.5–6.9、单圈+尾/6 7.8、#8040 1.55–3.15、#9000 2.46；
+  折线 0.70–0.97、S 0.26–0.52、#1208 0.09–0.73、#6039 0.00–0.23。
+- `closedSegments` 增加 `MIN_CONTOUR_AREA=1.2`（相对面积，不是形状规则），保留
+  `MIN_CONTOUR_SPAN=2.5` 的相对周长下限。
+- 结果：折线/S/1 不再有 `closure`；纯圆/双圈/单圈+尾/6/#8040 保持；#9000 保持 `closure`。
+  `#6039`（6）的链是往返折返、没有围出面积，因此不再误报 `closure`——这是正确的负结果，
+  不是通道丢失概念。
+- 剩余：G6 完全体（逐帧信念入记忆）；论文/报告叙事。
 
 ### 7.14 A2 重叠候选实验（负结果，已回退）
 
@@ -712,12 +728,16 @@ const band = stepMatch ? (directionMatch ? "low" : "high") : null;
 - 已知限制：真正的 `Engine.compose`（在引擎工作周期里按注意力引入、并让类原型从经验中长出
   `∩` 词项）还没做；当前是推理侧的有预算观察生成。下一步在阶段 8 里接。
 
-### 7.10 第 8 阶段（部分）：类原型置信度
+### 7.10 第 8 阶段：类原型真值来自逐样本 evidence revision（G6 首版）
 
-- `tools/baby.ts` 的记忆写入从 `c = 0.99` 改为 `c = n/(n+k)`，`n = 每类训练样本数`、
-  `k = PRIOR_EVIDENCE = 2`。这是同一陈述的证据量，不再是魔法数；`f` 仍是类内出现率。
-- 仍待做：训练事件本身入记忆（`frame_i → [term]` 的逐样本修订），以及真正的引擎内复合。
-- 验收：`grep -n "0.99" tools/baby.ts` 只剩观察侧的 present/absent 读数；记忆写入无 0.99。
+- `tools/baby.ts` 新增 `prototypeTruth(hits, total)`：每个训练样本是一次
+  `{f: 出现?1:0, c: OBSERVATION_C}` 证据，按 NAL `revision` 逐条累积；`f/c` 由证据算出。
+- 删除 `c=0.99` 与 `PRIOR_EVIDENCE` / `n/(n+k)` 公式；记忆仍是一条 `digit_d → [term]`，
+  但它代表“这类样本的证据合计”，不是硬编码置信度。
+- 仍未做：把每个 `frame_i → [term]` 作为独立信念存进记忆（会带来 800×词表级存储）；
+  当前是“逐样本证据 → revision → 一条原型”的压缩。
+- 验收：`grep -n "PRIOR_EVIDENCE\|prototypeConfidence" tools/baby.ts` 为空；
+  `prototypeTruth` 是唯一写入原型真值的地方。
 
 ---
 
