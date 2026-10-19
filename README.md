@@ -79,6 +79,7 @@ code/
 ## 交互报告
 
 - [打开独立测试报告](report/index.html)：单个 HTML，约 3 MB，内嵌 200 个测试样本、逐样本答案、候选圆与 Shift 链；不需要服务器。
+- 在线版：<https://poerlang.github.io/pixel-to-concept-reader/report/index.html>
 
 ## 音频
 
