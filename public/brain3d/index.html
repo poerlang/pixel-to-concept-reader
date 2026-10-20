@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#05080a">
+<title>EXPERIENCE // GROWING FIELD</title>
+<style>
+  :root {
+    --bg: #05080a;
+    --ink: #d9e7ea;
+    --dim: #6b828a;
+    --faint: #31464e;
+    --line: #1b3038;
+    --panel: rgba(8, 14, 17, .74);
+    --cyan: #57e0d0;
+    --amber: #ffb454;
+    --red: #ff5f56;
+    --blue: #7fb4ff;
+    --accent: #57e0d0;
+    --mono: "SFMono-Regular", "Cascadia Code", "IBM Plex Mono", ui-monospace, monospace;
+    --sans: "Inter", "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; overflow: hidden; background: var(--bg); color: var(--ink);
+    font-family: var(--sans); -webkit-tap-highlight-color: transparent;
+    user-select: none; touch-action: none;
+  }
+  #scene { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  #scan, #vignette, #flash { position: fixed; inset: 0; pointer-events: none; }
+  #scan {
+    z-index: 2; opacity: .38; mix-blend-mode: overlay;
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,.045) 0 1px, transparent 1px 4px);
+  }
+  #vignette {
+    z-index: 2;
+    background: radial-gradient(ellipse at 50% 44%, transparent 36%, rgba(0,0,0,.66) 100%);
+  }
+  #flash {
+    z-index: 6; opacity: 0; background: var(--accent);
+    transition: opacity .55s ease-out; mix-blend-mode: screen;
+  }
+  #flash.on { opacity: .16; transition: opacity .06s ease-in; }
+  .hud { position: fixed; z-index: 4; pointer-events: none; }
+  .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .panel {
+    background: linear-gradient(180deg, rgba(10,18,21,.88), rgba(6,11,13,.78));
+    border: 1px solid var(--line);
+    box-shadow: inset 0 0 0 1px rgba(87,224,208,.035), 0 18px 50px rgba(0,0,0,.4);
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+    backdrop-filter: blur(7px);
+  }
+  .panel::before {
+    content: ""; position: absolute; inset: 6px; border: 1px solid rgba(87,224,208,.05);
+    pointer-events: none;
+  }
+  #top {
+    left: 0; right: 0; top: 0; height: 58px; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 22px;
+    background: linear-gradient(180deg, rgba(5,8,10,.82), transparent);
+  }
+  .brand { font-family: var(--mono); font-size: 12px; letter-spacing: .22em; color: var(--ink); }
+  .brand .glyph { color: var(--accent); margin-right: 8px; animation: glyph 2.8s ease-in-out infinite; }
+  .brand .slash { color: var(--faint); margin: 0 8px; }
+  .brand b { font-weight: 500; color: var(--dim); }
+  @keyframes glyph { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
+  .status { display: flex; align-items: center; gap: 16px; font-family: var(--mono); font-size: 11px; letter-spacing: .12em; }
+  #top .status { position: absolute; right: 22px; top: 0; height: 58px; }
+  .phase::before { content: "●"; margin-right: 7px; font-size: 8px; vertical-align: 1px; }
+  .phase { color: var(--accent); }
+  .phase.transition { color: var(--amber); }
+  .clock { color: var(--dim); }
+  .fps { color: var(--faint); }
+  #left {
+    left: 18px; top: 76px; width: 252px; padding: 16px 16px 14px;
+  }
+  .kicker {
+    font-family: var(--mono); font-size: 9px; letter-spacing: .2em; color: var(--dim);
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .kicker .idx { color: var(--faint); }
+  #figName {
+    margin: 12px 0 2px; font-size: 27px; line-height: 1.05; font-weight: 500;
+    letter-spacing: .01em;
+  }
+  .code {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .2em; color: var(--accent);
+  }
+  .progress {
+    position: relative; height: 3px; margin: 15px 0 14px; background: rgba(255,255,255,.06);
+    overflow: hidden;
+  }
+  .progress i {
+    position: absolute; inset: 0 auto 0 0; width: 0%; background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+  }
+  .stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px;
+    font-family: var(--mono); font-size: 10px; color: var(--dim);
+  }
+  .stats b { display: block; color: var(--ink); font-size: 15px; font-weight: 500; margin-top: 2px; }
+  .stats .hot b { color: var(--accent); }
+  .fam {
+    display: flex; justify-content: space-between; margin-top: 14px; padding-top: 11px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono); font-size: 9px; letter-spacing: .16em; color: var(--dim);
+  }
+  .fam .tag { color: var(--accent); }
+  .speed {
+    display: flex; gap: 3px; margin-top: 11px; pointer-events: auto;
+  }
+  .speed button {
+    width: 38px; min-width: 0; border: 1px solid var(--line); background: transparent; color: var(--faint);
+    font-family: var(--mono); font-size: 8px; letter-spacing: .04em; padding: 5px 0;
+    cursor: pointer; transition: color .15s, border-color .15s, background .15s;
+  }
+  .speed button:hover { color: var(--ink); }
+  .speed button.active { color: var(--accent); border-color: var(--accent); background: rgba(87,224,208,.08); }
+  .switches { display: flex; gap: 3px; margin-top: 6px; }
+  .switches button {
+    flex: 1; border: 1px solid var(--line); background: transparent; color: var(--dim);
+    font-family: var(--mono); font-size: 8px; letter-spacing: .06em; padding: 5px 0;
+    cursor: pointer; transition: color .15s, border-color .15s, background .15s;
+  }
+  .switches button:hover { color: var(--ink); }
+  .switches button.active { color: var(--amber); border-color: var(--amber); }
+  .rotate {
+    width: 100%; margin-top: 6px; border: 1px solid var(--line); background: transparent;
+    color: var(--dim); font-family: var(--mono); font-size: 9px; letter-spacing: .12em;
+    padding: 6px 0; cursor: pointer; pointer-events: auto;
+  }
+  .rotate.active { color: var(--accent); border-color: var(--accent); }
+  #labels { position: fixed; inset: 0; z-index: 8; pointer-events: none; }
+  #instLabels { position: fixed; inset: 0; z-index: 7; pointer-events: none; }
+  .ilabel {
+    position: absolute; transform: translate(-50%, -50%);
+    padding: 1px 5px; border: 1px solid rgba(87,224,208,.45);
+    background: rgba(5,10,12,.72); color: var(--accent);
+    font-family: var(--mono); font-size: 10px; letter-spacing: .04em;
+    opacity: .78; white-space: nowrap;
+  }
+  .nlabel {
+    position: absolute; transform: translate(-50%, -100%);
+    padding: 3px 7px; border: 1px solid var(--line);
+    background: rgba(6,11,13,.92); color: var(--ink);
+    font-family: var(--mono); font-size: 9px; letter-spacing: .02em;
+    white-space: nowrap; opacity: 1; transition: opacity .35s ease;
+    max-width: 260px; overflow: hidden; text-overflow: ellipsis;
+  }
+  .nlabel.hover { border-color: var(--accent); color: var(--accent); }
+  #right {
+    right: 18px; top: 76px; width: 292px; padding: 15px 15px 13px;
+    max-height: calc(100vh - 190px); overflow: hidden;
+  }
+  #trace { margin-top: 9px; }
+  .trace-row {
+    display: grid; grid-template-columns: 34px 1fr 32px; gap: 7px; align-items: start;
+    padding: 5px 0; border-top: 1px solid rgba(255,255,255,.045);
+    font-family: var(--mono); font-size: 9px; color: var(--dim);
+    animation: trace-in .28s ease-out;
+  }
+  @keyframes trace-in { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: translateY(0); } }
+  .trace-row .rule { color: var(--cyan); letter-spacing: .08em; }
+  .trace-row.derive .rule { color: var(--amber); }
+  .trace-row .statement { color: var(--ink); line-height: 1.3; overflow: hidden; max-height: 2.6em; word-break: break-word; }
+  .trace-row .truth { color: var(--faint); text-align: right; }
+  .layer { margin-top: 11px; }
+  .layer .row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: var(--mono); font-size: 9px; letter-spacing: .12em; color: var(--dim);
+    margin-bottom: 5px;
+  }
+  .layer .row b { color: var(--ink); font-weight: 500; }
+  .layer .track { height: 3px; background: rgba(255,255,255,.05); position: relative; overflow: hidden; }
+  .layer .track i { position: absolute; inset: 0 auto 0 0; width: 0%; background: var(--lc, var(--accent)); opacity: .9; }
+  .layer .dot { display: inline-block; width: 6px; height: 6px; margin-right: 7px; background: var(--lc, var(--accent)); box-shadow: 0 0 8px var(--lc, var(--accent)); }
+  #terms { margin-top: 9px; }
+  .term {
+    display: flex; align-items: center; gap: 8px; padding: 5px 0;
+    border-top: 1px solid rgba(255,255,255,.045);
+    font-family: var(--mono); font-size: 9px; color: var(--dim);
+  }
+  .term .swatch { width: 3px; height: 14px; background: var(--lc); box-shadow: 0 0 7px var(--lc); flex: none; }
+  .term .key { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); }
+  .term .n { color: var(--faint); }
+  #bottom {
+    left: 18px; right: 18px; bottom: 14px; display: flex; flex-direction: column; gap: 8px;
+  }
+  #timeline {
+    display: flex; gap: 4px; pointer-events: auto;
+    padding: 6px; border: 1px solid var(--line);
+    background: rgba(6,11,13,.7); overflow-x: auto; scrollbar-width: none;
+    touch-action: pan-x; -webkit-overflow-scrolling: touch;
+  }
+  #timeline::-webkit-scrollbar { display: none; }
+  .tick {
+    flex: 1; min-width: 58px; border: 0; background: transparent; color: var(--faint);
+    font-family: var(--mono); font-size: 8px; letter-spacing: .1em; padding: 7px 3px 5px;
+    cursor: pointer; border-top: 1px solid transparent; transition: color .2s, background .2s;
+  }
+  .tick:hover { color: var(--ink); background: rgba(255,255,255,.03); }
+  .tick.active { color: var(--accent); border-top-color: var(--accent); background: rgba(87,224,208,.055); }
+  .tick .bar { display: block; height: 2px; margin-top: 5px; background: currentColor; opacity: .35; }
+  .hint {
+    font-family: var(--mono); font-size: 8px; letter-spacing: .16em; color: var(--faint);
+    display: flex; justify-content: space-between; padding: 0 4px;
+  }
+  #toast {
+    left: 0; top: 0; max-width: 340px; padding: 9px 11px; border: 1px solid var(--line);
+    background: rgba(6,11,13,.94); opacity: 0; transform: translateY(4px);
+    transition: opacity .18s, transform .18s; font-family: var(--mono); font-size: 9px;
+    line-height: 1.5; color: var(--dim); z-index: 50;
+  }
+  #toast.show { opacity: 1; transform: translateY(0); }
+  #toast b { display: block; color: var(--ink); font-weight: 500; word-break: break-all; }
+  #boot {
+    position: fixed; inset: 0; z-index: 10; background: var(--bg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+    transition: opacity .6s ease, visibility .6s;
+  }
+  #boot.done { opacity: 0; visibility: hidden; }
+  .boot-title { font-family: var(--mono); font-size: 10px; letter-spacing: .3em; color: var(--cyan); }
+  .boot-bar { width: 180px; height: 2px; background: rgba(255,255,255,.07); overflow: hidden; }
+  .boot-bar i { display: block; width: 40%; height: 100%; background: var(--cyan); animation: boot 1s ease-in-out infinite; }
+  @keyframes boot { 0% { transform: translateX(-100%); } 100% { transform: translateX(350%); } }
+  .paused #phase { color: var(--amber); }
+  /* readability pass: the HUD is intentionally generous, not a dashboard at 100% */
+  .brand { font-size: 13px; }
+  .status { font-size: 12px; }
+  .kicker { font-size: 11px; }
+  .code { font-size: 12px; }
+  .stats { font-size: 12px; }
+  .stats b { font-size: 18px; }
+  .fam { font-size: 11px; }
+  #left { width: 280px; }
+  #right { width: 360px; }
+  #figName { font-size: 30px; }
+  .speed button { width: 44px; font-size: 10px; }
+  .switches { pointer-events: auto; margin-top: 7px; }
+  .switches button { font-size: 10px; padding: 6px 0; pointer-events: auto; }
+  .rotate { font-size: 10px; padding: 7px 0; }
+  .nlabel { font-size: 11px; max-width: 320px; }
+  .trace-row { font-size: 10.5px; }
+  .layer .row { font-size: 10px; }
+  .tick { font-size: 9px; }
+  .hint { font-size: 9px; }
+  #toast { font-size: 11px; max-width: 400px; padding: 10px 12px; }
+  @media (max-width: 900px) {
+    #right { display: none; }
+    #left { width: 250px; }
+    #figName { font-size: 26px; }
+  }
+  @media (max-width: 620px) {
+    #top { height: 50px; padding: 0 14px; }
+    #top .status { display: none; }
+    .brand { font-size: 10px; letter-spacing: .16em; }
+    .brand .slash, .brand b { display: none; }
+    .status .clock, .status .fps { display: none; }
+    #left { left: 12px; right: auto; top: calc(60px + env(safe-area-inset-top)); width: calc(100vw - 24px); max-width: calc(100vw - 24px); padding: 12px 13px; }
+    #figName { font-size: 24px; margin-top: 8px; }
+    .stats { grid-template-columns: repeat(3, 1fr); gap: 8px 10px; }
+    .stats b { font-size: 16px; }
+    .fam { display: block; margin-top: 10px; padding-top: 8px; }
+    .fam .tag { display: block; margin-bottom: 3px; }
+    #obs { display: block; }
+    .speed button { width: 42px; }
+    .rotate { width: 222px; }
+    #bottom { left: 8px; right: 8px; bottom: calc(8px + env(safe-area-inset-bottom)); }
+    .hint { display: none; }
+    .tick { min-width: 48px; font-size: 8px; white-space: nowrap; overflow: hidden; }
+  }
+  @media (max-height: 520px) and (orientation: landscape) {
+    #left { top: 56px; width: 200px; padding: 10px; }
+    #figName { font-size: 18px; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    #bottom { bottom: 6px; }
+  }
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+<div id="scan"></div>
+<div id="vignette"></div>
+<div id="flash"></div>
+
+<header id="top" class="hud">
+  <div class="brand"><span class="glyph">◈</span>EXPERIENCE<span class="slash">/</span><b>GROWING FIELD</b></div>
+  <div class="status">
+    <span id="phase" class="phase">BOOT</span>
+    <span id="clock" class="clock">00:00.0</span>
+    <span id="fps" class="fps">-- FPS</span>
+  </div>
+</header>
+
+<aside id="left" class="hud panel">
+  <div class="kicker"><span>SPECIMEN</span><span class="idx" id="idx">01 / 10</span></div>
+  <h1 id="figName">—</h1>
+  <div id="figCode" class="code">—</div>
+  <div class="progress"><i id="bar"></i></div>
+  <div class="stats" id="stats"></div>
+  <div class="fam"><span class="tag" id="famTag">—</span><span id="obs">OBSERVING</span></div>
+  <div class="speed" id="speed"></div>
+  <div class="switches">
+    <button id="pauseBtn" type="button">PAUSE</button>
+    <button id="dwellBtn" type="button">DWELL 2×</button>
+  </div>
+  <button id="rotate" class="rotate active" type="button">ROTATE ON</button>
+</aside>
+
+<aside id="right" class="hud panel">
+  <div class="kicker"><span>CORTICAL STACK</span><span class="idx" id="stepInfo">00/00</span></div>
+  <div id="layers"></div>
+  <div class="kicker" style="margin-top:16px"><span>REASONING TRACE</span><span class="idx" id="memInfo">MEM 0</span></div>
+  <div id="trace"></div>
+</aside>
+
+<footer id="bottom" class="hud">
+  <div id="timeline"></div>
+  <div class="hint"><span>DRAG ORBIT · MIDDLE SCREEN PAN · RIGHT GROUND PAN · WHEEL ZOOM · SPACE PAUSE</span><span id="mode">AUTO ×1</span></div>
+</footer>
+
+<div id="toast" class="hud"></div>
+<div id="labels"></div>
+<div id="instLabels"></div>
+<div id="boot">
+  <div class="boot-title">INITIALIZING CORTICAL FIELD</div>
+  <div class="boot-bar"><i></i></div>
+</div>
+
+<script>
+  window.addEventListener("error", (event) => {
+    const boot = document.getElementById("boot");
+    if (!boot) return;
+    boot.classList.remove("done");
+    const title = boot.querySelector(".boot-title");
+    if (title) title.textContent = "ERROR: " + (event.message || "script error");
+  });
+  window.addEventListener("unhandledrejection", (event) => {
+    const boot = document.getElementById("boot");
+    if (!boot) return;
+    boot.classList.remove("done");
+    const title = boot.querySelector(".boot-title");
+    if (title) title.textContent = "ERROR: " + (event.reason?.message || event.reason || "promise rejection");
+  });
+</script>
+<script type="module" src="./app.js"></script>
+</body>
+</html>

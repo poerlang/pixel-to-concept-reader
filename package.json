@@ -1,0 +1,21 @@
+{
+  "name": "pixel-to-concept-reader-v2",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "grow": "node tools/grow.ts",
+    "visual": "node tools/visual.ts",
+    "report": "node tools/report.ts",
+    "report:standalone": "node tools/report.ts && node tools/report-standalone.ts",
+    "brain3d": "node tools/brain3d.ts",
+    "brain3d:serve": "node tools/brain3d.ts && node tools/serve-brain3d.ts",
+    "brain3d:standalone": "node tools/brain3d-standalone.ts",
+    "brain3d:pack": "node tools/brain3d.ts && node tools/brain3d-standalone.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}

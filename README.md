@@ -1,118 +1,91 @@
-# 操作差与相对布局
+# Pixel to Concept Reader v2
 
-### 一个基于 NAL 的手写数字识别实验
+> 通用经验 + NAL + Shift；不写“找圆/找凸/找边界/找近邻”的专用代码。
+> 最高约定：[agents.md](agents.md)。实现说明：[docs/experience.md](docs/experience.md)。
 
-**莫克陶**
+## 1. 一句话
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23461123.svg)](https://doi.org/10.5281/zenodo.23461123)
+**Buffer 只提供共现、顺序、成员；NAL 用 `→`、`↔`、`∩`、`revision` 把反复出现的模式变成概念。**
+没有形状检测器，没有 `near()`/`aligned()`/`convexHull()`。
 
-这个仓库收录一篇面向非专业读者的论文，包括中文版、英文版、PDF，以及论文中的三张图。
+## 2. 直接浏览
 
-论文讨论一个具体问题：计算机能否把“为什么把这张图认成 9”写成一组可检查的关系，并用这些关系完成识别。
+- 独立测试报告：[report/index.html](report/index.html)
+- 根目录单文件：[test_report.html](test_report.html)
+- 3D 经验演示：[public/brain3d/brain3d.standalone.html](public/brain3d/brain3d.standalone.html)
 
-## 先读哪一篇
+报告与单文件 HTML 都不依赖外部脚本、样式或图片；可以直接双击打开。
 
-| 你想做什么 | 建议从这读 |
-|---|---|
-| 快速了解结论 | [中文 PDF](paper/pixel-to-concept.zh.pdf) |
-| 在网页上读中文 | [中文 Markdown](paper/pixel-to-concept.zh.md) |
-| 读英文 | [English PDF](paper/pixel-to-concept.en.pdf) · [English Markdown](paper/pixel-to-concept.en.md) |
-| 只看图 | [图 1](figures/overview-zh.png) · [图 2](figures/classic-figures-vertical.png) · [图 3](figures/layout-invariance-vertical.png) |
-
-## 论文做了什么
-
-- 输入是 16×16 的手写数字图像；
-- 系统先把亮点组织成一些可能是圆形的小块；
-- 再记录小块之间的走法、转弯、重复、闭合和相对位置；
-- 这些关系被写成 NAL 词项，和记忆中的数字比较；
-- 识别阶段不使用 softmax、kNN、决策树或模板匹配。
-
-在 200 张测试样本上，系统取得 **82.0%** 的正确率。论文也报告了数字 8 与 9 的混淆，以及当前的主要瓶颈。
-
-## 这篇论文的边界
-
-- 它是一个独立的工程实验，不主张新的 NAL 视觉理论；
-- 82.0% 不是 MNIST 的最好结果，也不证明通用视觉；
-- 结构词表由人工设计；
-- 它不声称复制人脑，也不把“词项”等同于人类概念；
-- 8 与 9 等样本仍会失败。
-
-## 图
-
-![图 1：只给答案，还是把关系说出来](figures/overview-zh.png)
-
-图 1 用两条路径说明论文的出发点：一条只给答案，另一条把关系逐步说出来。
-
-其余三张图：
-
-- [图 2：经典图形作为结构词项的参照](figures/classic-figures-vertical.png)
-- [图 3：相对布局在平移后保持不变](figures/layout-invariance-vertical.png)
-- [图 4：测试报告界面](figures/report-interface.png)
-
-## 文件结构
+## 3. 结构
 
 ```text
-paper/
-  pixel-to-concept.zh.md      中文论文
-  pixel-to-concept.zh.pdf     中文 PDF
-  pixel-to-concept.en.md      English paper
-  pixel-to-concept.en.pdf     English PDF
-figures/
-  overview-zh.png             中文导读图
-  overview-en.png             English overview
-  classic-figures-vertical.png
-  layout-invariance-vertical.png
-  report-interface.png       测试报告界面
-report/
-  index.html                 独立测试报告（HTML）
-audio/
-  pixel-to-concept.zh.mp3    中文可听版（约 11 分钟）
-  pixel-to-concept.zh.script.txt
-code/
-  README.md                  代码说明、数据格式、运行命令
-  src/                       NAL 与感知代码
-  tools/                     训练/测试/诊断脚本
+世界/图像
+  → src/experience/world.ts       普通属性观察（entity → property）
+  → src/visual/shift.ts           蔓延粗点 + Shift：相对位置差/二阶差
+  → src/experience/event.ts       有限 EventBuffer（容量 + 优先级）
+  → src/nars/engine.ts            比较 / 相似 / 交集 / 修订
+  → src/nars/memory.ts            概念与信念
+  → tools/report.ts               所有图像激活报告
+  → tools/brain3d.ts              真实 trace → 3D 数据
+  → public/brain3d/               Three.js 3D 可视化
 ```
 
-所有图都提供 SVG 源文件，方便打印或二次排版。
+- `src/nars`：通用 NAL 核心，不含 digit/loop/网格/具体类别名。
+- `src/experience`：通用经验循环；只有事件、世界、Buffer、NAL。
+- `src/visual`：蔓延求同 → 边界粗点 → Shift 相对矢量 → 曲率经验。
+- `tools/report.ts`：加载 `memory/visual.bin`，观察图像，生成可切换报告。
+- `public/brain3d`：现有 3D 前端，复用 Three.js 渲染。
+- `archive-v1/`：旧版论文/音频/图/代码，仅作历史，不是当前实现。
 
-## 交互报告
+## 4. 命令
 
-- [打开独立测试报告](report/index.html)：单个 HTML，约 3 MB，内嵌 200 个测试样本、逐样本答案、候选圆与 Shift 链；不需要服务器。
-- 在线版：<https://poerlang.github.io/pixel-to-concept-reader/report/index.html>
+需要 Node.js 22+（直接用 `node tools/*.ts` 运行 TS）。
 
-## 音频
+```bash
+npm install
+npm run typecheck
+npm run grow           # 阶段成长，写入 memory/experience.bin
+npm run visual         # 蔓延粗点 + Shift 轨迹 + 直/弯判断
+npm run report         # 所有图像 + 点击切换 → test_report.html
+npm run report:standalone # 校验自包含并复制为 report/index.html
+npm run brain3d        # 加载快照，生成 public/brain3d/data.js
+npm run brain3d:serve  # 生成并启动 3D 预览
+npm run brain3d:pack   # 生成单文件 brain3d.standalone.html
+```
 
-- [中文可听版 MP3](audio/pixel-to-concept.zh.mp3)：约 11 分钟；
-- [朗读稿](audio/pixel-to-concept.zh.script.txt)：只含可朗读的正文，已省略公式、表格、代码和参考文献。
+## 5. 演示内容
 
-## 代码
+- 5 个实体在 3D 世界中移动；
+- 每帧产生颜色/位置/运动/大小等普通观察；
+- `Shift` 选“少改变 + 近”的焦点；`?` 问句做有限的蔓延求同；
+- 概念经济：复杂度租金 + 复用/预测/压缩收入；低收益概念会被删除；
+- EventBuffer 只保留有限事件；
+- NAL 通过共同主项比较出相似、通过交集预算产生复合；
+- 记忆先存二进制，启动时加载；3D 图按步骤增长，显示引擎**真实**派生的经验，不是预置形状。
 
-代码也放在同一个仓库：[code/README.md](code/README.md)。
+## 6. 真通用规则（摘要）
 
-- Node.js 26，原生 TypeScript，无运行时 npm 依赖；
-- `src/nars` 是通用 NAL 部分，`src/perception` 是像素到结构词项的感知部分；
-- 训练/测试命令在 `code/` 目录运行；
-- MNIST 二进制数据不随仓库分发，格式和放置位置写在代码说明里；
-- 用同一份数据跑过：200 张测试，**164/200 = 82.0%**。
+1. 禁止语义专用谓词/检测器/形状分支；
+2. 禁止形状/类别先验、样本先验、类条件剪枝；
+3. 禁止手写关系组合；复合交给 `Engine.compose`；
+4. 概念名可以来自经验，但不能有 `isCircle()`/`isConvex()`；
+5. AIKR 参数只设资源：Buffer 容量、复合预算、复杂度租金、耐久度、遗忘、探索；
+6. 不设 `NEAR_WEIGHT`/`CIRCLE_BONUS`/`CONVEX_BONUS`；
+7. 分数只作事故记录，不作保留/回退依据；
+8. 可由 Shift / 二阶差 / NAL 复合出来的东西，不新增原语。
 
-## 引用
+完整规则见 [agents.md](agents.md)。
 
-如果你在写作中引用这篇论文，可以写：
+## 7. 已删除
 
-> 莫克陶. 操作差与相对布局：一个基于 NAL 的结构词项识别实验. 2026.
+- `src/perception/` 全部形状/关系/布局代码；
+- 旧专用工具 `baby/curriculum/figures/digest/debug-sample/error-analysis/paper/standalone`；
+- 依赖它们的专用文档。
 
-## English
+## 8. 文档
 
-This repository contains a reader-friendly paper on handwritten digit recognition with Non-Axiomatic Logic (NAL).
-
-The system groups bright pixels into rough circular patches, records steps, turns, repetition, closure, and relative positions, and compares these relations with remembered digits. Recognition uses NAL comparison, revision, and questioning, with no standard classifier.
-
-The prototype reaches 82.0% on 200 test images. The paper also reports confusions between 8 and 9 and the current limits of the approach.
-
-Start with the [English PDF](paper/pixel-to-concept.en.pdf) or the [English Markdown](paper/pixel-to-concept.en.md).
-
-## 版本
-
-- v1.1.0：修正图 3 的平移幅度，使 shift 更明显；DOI: [10.5281/zenodo.23461123](https://doi.org/10.5281/zenodo.23461123)
-- v1.0.0：第一次公开的读者版；DOI: [10.5281/zenodo.23461038](https://doi.org/10.5281/zenodo.23461038)
+- [agents.md](agents.md)：最高约定。
+- [docs/experience.md](docs/experience.md)：Buffer + NAL + 3D 演示。
+- [docs/visual.md](docs/visual.md)：Shift 相对量、AND 与激活报告。
+- [docs/reading-notes.md](docs/reading-notes.md)：理论笔记。
+- [docs/HANDOFF.md](docs/HANDOFF.md)：当前状态与下一步。
