@@ -1,0 +1,27 @@
+{
+  "name": "pdftest8",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc -p tsconfig.json",
+    "test:operations": "node --experimental-strip-types tools/check-operations.ts",
+    "test:silent": "node --experimental-strip-types tools/run-silent.ts",
+    "pack:html": "node --experimental-strip-types tools/pack-html.ts",
+    "ship": "node --experimental-strip-types tools/pack-html.ts"
+  },
+  "dependencies": {
+    "three": "^0.184.0",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/three": "^0.184.0",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "typescript": "^5.9.3",
+    "vite": "^6.0.7",
+    "vite-plugin-singlefile": "^2.3.4"
+  }
+}

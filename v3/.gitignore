@@ -1,0 +1,44 @@
+# 依赖
+node_modules/
+.pnpm-store/
+
+# 构建产物 / 临时目录
+dist/
+.pack-tmp/
+.buildtmp/
+.vite/
+*.tsbuildinfo
+
+# 本地环境与私有配置
+.env
+.env.*
+!.env.example
+*.local
+
+# 日志
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 测试 / 覆盖率产物
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+blob-report/
+
+# Archify 工作目录与可重生成回执
+.archify/
+docs/architecture/*.finalize.json
+docs/architecture/*.finalize-summary.json
+docs/architecture/*.browser-check.json
+docs/architecture/*.delivery.json
+
+# 编辑器 / 操作系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
