@@ -8,7 +8,8 @@ import { Engine } from "../nars/engine.ts";
 import { Memory } from "../nars/memory.ts";
 import { atom, inheritance, property } from "../nars/term.ts";
 import { loadMemory, saveMemory } from "../experience/store.ts";
-import { accelerations, accelProfile, shiftObservations, traceShift } from "./shift.ts";
+import { accelerations, accelProfile, shiftObservations } from "./shift.ts";
+import { askTrace } from "./ask.ts";
 import type { Figure } from "./types.ts";
 
 export type CurveVerdict = {
@@ -53,7 +54,7 @@ export class VisualExperience {
     this.names.set(id, figure.name);
     this.byName.set(figure.name, id);
     this.engine.resetComposition();
-    for (const term of shiftObservations(traceShift(figure.grid))) {
+    for (const term of shiftObservations(askTrace(figure.grid))) {
       this.engine.feed(inheritance(atom(id), property(term)), { f: 1, c: 0.9 }, 0.6);
     }
     this.engine.run(cycles);
@@ -62,7 +63,7 @@ export class VisualExperience {
 
   /** 只看 Shift 的加速度分布，不查像素块，也不查候选列表。 */
   judge(grid: number[]): CurveVerdict {
-    const trace = traceShift(grid);
+    const trace = askTrace(grid);
     const accels = trace.episodes.flatMap((episode) => accelerations(episode.steps));
     const maxAbsAccel = accels.reduce((max, accel) => Math.max(max, accel.mag), 0);
     const meanAbsAccel = accels.length

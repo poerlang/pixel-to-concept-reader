@@ -30,8 +30,13 @@ const ring = (grid: number[], cx: number, cy: number, r: number, thickness: numb
 };
 
 const stroke = (grid: number[], cx: number, cy: number, thickness: number): void => {
-  if (thickness <= 1) put(grid, Math.round(cx), Math.round(cy));
-  else disc(grid, cx, cy, thickness / 2);
+  const x = Math.round(cx);
+  const y = Math.round(cy);
+  const lo = Math.floor(thickness / 2);
+  const hi = Math.floor((thickness - 1) / 2);
+  for (let oy = -lo; oy <= hi; oy++) {
+    for (let ox = -lo; ox <= hi; ox++) put(grid, x + ox, y + oy);
+  }
 };
 
 const line = (grid: number[], x0: number, y0: number, x1: number, y1: number, thickness: number): void => {
@@ -105,7 +110,7 @@ export function simpleFigures(): Figure[] {
     out.push(figure(`arc_${t}`, `${t}号半圆`, g, "black", ["arc"]));
   }
 
-  for (const t of [3, 4]) {
+  for (const t of [4]) {
     const g = blank(); line(g, 2, 8, 13, 8, t);
     out.push(figure(`thick_line_${t}`, `${t}号粗线`, g, "black", ["line"]));
   }
@@ -152,7 +157,7 @@ export function complexFigures(simple: Figure[]): Figure[] {
     ["angle_1", "dot_1", -4, 2, "角 + 圆点"],
     ["s_1", "line_v_1", 4, 0, "S + 竖线"],
     ["arc_1", "line_d_1", 4, 4, "半圆 + 斜线"],
-    ["thick_ring_3", "thick_line_3", 0, -4, "粗圆 + 粗线"],
+    ["thick_ring_3", "thick_line_4", 0, -4, "粗圆 + 粗线"],
     ["polyline_1", "circle_1", 4, -3, "折线 + 圆"],
   ];
   for (const [a, b, dx, dy, name] of pairs) {

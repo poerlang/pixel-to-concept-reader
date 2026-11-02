@@ -30,7 +30,7 @@ const order = [
   "angle_1",
   "s_1",
   "arc_1",
-  "thick_line_3",
+  "thick_line_4",
   "thick_ring_3",
 ];
 const byId = new Map(simple.map((figure) => [figure.id, figure]));

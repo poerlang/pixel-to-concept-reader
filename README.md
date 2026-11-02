@@ -10,7 +10,10 @@
 
 ## 2. 直接浏览
 
-- 独立测试报告：[report/index.html](report/index.html)
+- 独立测试报告：[test_report_v2.html](test_report_v2.html)
+- 单文件合并版：[test_report_v3.html](test_report_v3.html)
+- 逐帧播放器：[trace_player.html](trace_player.html)
+- 粗点演算动画：[coarse_player.html](coarse_player.html)
 - 根目录单文件：[test_report.html](test_report.html)
 - 3D 经验演示：[public/brain3d/brain3d.standalone.html](public/brain3d/brain3d.standalone.html)
 
@@ -21,7 +24,8 @@
 ```text
 世界/图像
   → src/experience/world.ts       普通属性观察（entity → property）
-  → src/visual/shift.ts           蔓延粗点 + Shift：相对位置差/二阶差
+  → src/visual/ask.ts             问句脉冲：四邻接散播 → 4 锚点圆 → 粗点
+  → src/visual/shift.ts           Shift：相对位置差/二阶差
   → src/experience/event.ts       有限 EventBuffer（容量 + 优先级）
   → src/nars/engine.ts            比较 / 相似 / 交集 / 修订
   → src/nars/memory.ts            概念与信念
@@ -32,7 +36,7 @@
 
 - `src/nars`：通用 NAL 核心，不含 digit/loop/网格/具体类别名。
 - `src/experience`：通用经验循环；只有事件、世界、Buffer、NAL。
-- `src/visual`：蔓延求同 → 边界粗点 → Shift 相对矢量 → 曲率经验。
+- `src/visual`：问句脉冲 → 4 锚点圆粗点 → Shift 相对矢量 → 曲率经验。
 - `tools/report.ts`：加载 `memory/visual.bin`，观察图像，生成可切换报告。
 - `public/brain3d`：现有 3D 前端，复用 Three.js 渲染。
 - `archive-v1/`：旧版论文/音频/图/代码，仅作历史，不是当前实现。
@@ -45,9 +49,12 @@
 npm install
 npm run typecheck
 npm run grow           # 阶段成长，写入 memory/experience.bin
-npm run visual         # 蔓延粗点 + Shift 轨迹 + 直/弯判断
+npm run visual         # 问句脉冲粗点 + Shift 轨迹 + 直/弯判断
 npm run report         # 所有图像 + 点击切换 → test_report.html
-npm run report:standalone # 校验自包含并复制为 report/index.html
+npm run report:standalone # 校验自包含并复制为 test_report_v2.html
+npm run report:v3 # 合并三个视图 → test_report_v3.html
+npm run trace:player # 4号粗圆 Shift 逐帧播放器 → trace_player.html
+npm run coarse:player # 粗点演算动画 → coarse_player.html
 npm run brain3d        # 加载快照，生成 public/brain3d/data.js
 npm run brain3d:serve  # 生成并启动 3D 预览
 npm run brain3d:pack   # 生成单文件 brain3d.standalone.html

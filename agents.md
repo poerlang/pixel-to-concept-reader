@@ -135,11 +135,14 @@ keep(T)   = income(T) > λ × cost(T)
 ```text
 src/nars/           通用 NAL：词项、真值、句子、袋、规则、引擎、记忆、交集、实例
 src/experience/     通用经验：EventBuffer、World、Experience、Shift、Spread、Economy、二进制快照
-src/visual/         蔓延粗点 → Shift 相对矢量/二阶差 → 曲率
+src/visual/         问句脉冲 → 4 锚点圆粗点 → Shift 相对矢量/二阶差 → 曲率
 tools/grow.ts       阶段成长 + 选较好记忆写入 memory/experience.bin
 tools/visual.ts     视觉经验训练 + 直/弯判断
 tools/report.ts     所有图像激活报告，导出可切换 test_report.html
-tools/report-standalone.ts 校验并复制为 report/index.html
+tools/report-standalone.ts 校验并复制为 test_report_v2.html
+tools/report-evidence.ts 只读的词项 → Shift 证据落点
+tools/trace-player.ts 只读的 Shift 逐帧 HTML 播放器
+tools/coarse-player.ts 只读的粗点演算动画
 tools/brain3d.ts    加载快照 → 经验 → 3D 数据
 tools/brain3d-standalone.ts / serve-brain3d.ts   3D 演示基础设施
 public/brain3d/     3D 前端（Three.js）
@@ -187,7 +190,7 @@ npm run brain3d:pack  # 生成单文件 HTML
 7. `npm run visual` 能加载/训练简单图形，用 Shift 的相对矢量/二阶差给出直/弯判断；
 8. 没有把可由现有操作/经验复合出来的东西写成新原语；
    二阶差只能由相邻 Shift 的差派生，不能成为独立词项；
-9. `npm run report` 能加载经验并生成 `test_report.html`；`npm run report:standalone` 能生成独立 `report/index.html`。
+9. `npm run report` 能加载经验并生成 `test_report.html`；`npm run report:standalone` 能生成独立 `test_report_v2.html`。
 
 ## 9. 工作纪律
 

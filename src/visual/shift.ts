@@ -16,130 +16,11 @@ export type ShiftTrace = {
   episodes: ShiftEpisode[];
 };
 
-const key = (point: Point): string => `${point.x},${point.y}`;
-const distance = (a: Point, b: Point): number => Math.hypot(b.x - a.x, b.y - a.y);
-
-/**
- * 蔓延求同：先把局部有差异的格子作为场点，再在局部半径内聚成粗点。
- * 纯白/纯黑不是特判成空，而是因为没有“差异”，自然没有场点。
- * 90% 白 + 10% 黑也一样：只有交界处有场点，不会把整个白面当形状。
- */
-export function spreadPoints(grid: number[], size = 16, radius = 1.75): ThickPoint[] {
-  const boundary: Point[] = [];
-  for (let y = 0; y < size; y++) {
-    for (let x = 0; x < size; x++) {
-      const here = grid[y * size + x] ? 1 : 0;
-      let differs = false;
-      for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]] as const) {
-        const nx = x + dx;
-        const ny = y + dy;
-        if (nx < 0 || ny < 0 || nx >= size || ny >= size) continue;
-        if ((grid[ny * size + nx] ? 1 : 0) !== here) differs = true;
-      }
-      if (differs) boundary.push({ x: x + 0.5, y: y + 0.5 });
-    }
-  }
-
-  const remaining = new Map<string, Point>();
-  for (let y = 0; y < size; y++) {
-    for (let x = 0; x < size; x++) {
-      if (!grid[y * size + x]) continue;
-      const point = { x: x + 0.5, y: y + 0.5 };
-      if (boundary.some((edge) => distance(point, edge) <= 1.5)) {
-        remaining.set(`${x},${y}`, point);
-      }
-    }
-  }
-
-  // 均匀场没有边界，但整幅场仍是一个粗点；它不产生方向，不是空。
-  if (boundary.length === 0) {
-    return [{ x: size / 2, y: size / 2, mass: size * size }];
-  }
-
-  const out: ThickPoint[] = [];
-  while (remaining.size > 0) {
-    const seed = [...remaining.values()].sort((a, b) => a.y - b.y || a.x - b.x)[0]!;
-    let mass = 0;
-    let sx = 0;
-    let sy = 0;
-    for (const [key, point] of remaining) {
-      if (distance(seed, point) > radius) continue;
-      mass++;
-      sx += point.x;
-      sy += point.y;
-      remaining.delete(key);
-    }
-    out.push({ x: sx / mass, y: sy / mass, mass });
-  }
-  return out;
-}
-
 const median = (values: number[]): number => {
   if (values.length === 0) return 1;
   const sorted = [...values].sort((a, b) => a - b);
   return sorted[Math.floor(sorted.length / 2)]!;
 };
-
-/** 从一个粗点跳到最近的未访问粗点；距离突变/方向断裂时结束当前 episode。 */
-export function tracePoints(points: Point[]): ShiftTrace {
-  const remaining = new Map(points.map((point) => [key(point), point]));
-  const episodes: ShiftEpisode[] = [];
-  const allPoints: Point[] = [];
-  const allSteps: ShiftStep[] = [];
-
-  while (remaining.size > 0) {
-    const start = [...remaining.values()].sort((a, b) => a.y - b.y || a.x - b.x)[0]!;
-    const episode: ShiftEpisode = { points: [], steps: [] };
-    let current = start;
-
-    while (remaining.size > 0) {
-      remaining.delete(key(current));
-      episode.points.push(current);
-      allPoints.push(current);
-
-      const previous = episode.steps.at(-1);
-      const medianStep = median(episode.steps.map((step) => Math.hypot(step.dx, step.dy)));
-      const jumpLimit = Math.max(2.5, medianStep * 2.5);
-      let next: Point | null = null;
-      let best = Infinity;
-      let bestDistance = Infinity;
-
-      for (const candidate of remaining.values()) {
-        const d = distance(current, candidate);
-        if (previous && d > jumpLimit) continue;
-        let score = d;
-        if (previous) {
-          const dx = candidate.x - current.x;
-          const dy = candidate.y - current.y;
-          if (previous.dx * dx + previous.dy * dy < 0) continue;
-          const denom = Math.hypot(previous.dx, previous.dy) * Math.hypot(dx, dy);
-          score += denom === 0 ? 1 : 0.35 * (1 - (previous.dx * dx + previous.dy * dy) / denom);
-        }
-        if (score < best || (score === best && next && (candidate.y < next.y || (candidate.y === next.y && candidate.x < next.x)))) {
-          best = score;
-          bestDistance = d;
-          next = candidate;
-        }
-      }
-
-      if (!next) break;
-      if (previous && bestDistance > jumpLimit) break;
-      const step = { from: current, to: next, dx: next.x - current.x, dy: next.y - current.y };
-      episode.steps.push(step);
-      allSteps.push(step);
-      current = next;
-    }
-
-    if (episode.points.length > 0) episodes.push(episode);
-  }
-
-  return { points: allPoints, steps: allSteps, episodes };
-}
-
-/** 蔓延优先：先形成边界粗点，再 Shift；没有局部差异时自然没有可走的点。 */
-export function traceShift(grid: number[], size = 16): ShiftTrace {
-  return tracePoints(spreadPoints(grid, size));
-}
 
 /** 一个 episode 的相邻相对矢量差：d2 - d1。 */
 export function accelerations(steps: ShiftStep[]): ShiftAccel[] {
@@ -172,7 +53,15 @@ const closureBin = (ratio: number): number => ratio < 0.25 ? 0 : ratio < 0.7 ? 1
 /** 每个 episode 分别产生相对观察；不写绝对 dx/dy 小数。 */
 export function episodeObservations(trace: ShiftTrace): string[][] {
   return trace.episodes.map((episode) => {
-    if (episode.steps.length === 0) return [];
+    if (episode.steps.length === 0) {
+      const point = episode.points[0];
+      if (!point) return [];
+      const mass = (point as Partial<ThickPoint>).mass ?? 1;
+      if (mass >= 16 * 16) return [];
+      const area = mass / (16 * 16);
+      const pointBin = mass < 8 ? 0 : mass < 32 ? 1 : 2;
+      return [`shift_point_${pointBin}`, "shift_span_0.000", `shift_area_${area.toFixed(3)}`];
+    }
     const lengths = episode.steps.map((step) => Math.hypot(step.dx, step.dy));
     const scale = median(lengths);
     const out: string[] = [];
